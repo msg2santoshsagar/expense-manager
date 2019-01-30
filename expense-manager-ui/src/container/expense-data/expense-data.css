@@ -1,0 +1,18 @@
+.expense-data-table{
+    width: 90%;
+    margin: auto;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+}
+.expense-data-table th{
+    text-align: left;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}

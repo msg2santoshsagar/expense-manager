@@ -1,8 +1,9 @@
 import React from "react";
+import ExpenseDataContainer from "../../container/expense-data/ExpenseDataContainer";
 
 const HomeComponent = () => (
-  <div>
-    <p>Home Worked</p>
+  <div className="home-component">
+    <ExpenseDataContainer />
   </div>
 );
 

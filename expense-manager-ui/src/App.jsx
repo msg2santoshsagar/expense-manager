@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import HomeComponent from "./component/home/HomeComponent";
 import PageNotFound from "./container/page-not-found/PageNotFound";
+import HomeContainer from "./container/home/HomeContainer";
 
 class App extends Component {
   render() {
@@ -10,7 +10,7 @@ class App extends Component {
       <div className="App">
         <Router>
           <Switch>
-            <Route exact path="/" component={HomeComponent} />
+            <Route exact path="/" component={HomeContainer} />
             <Route component={PageNotFound} />
           </Switch>
         </Router>
