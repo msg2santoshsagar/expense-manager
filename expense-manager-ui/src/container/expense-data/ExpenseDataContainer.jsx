@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import "./expense-data.css";
+import { connect } from "react-redux";
 
 class ExpenseDataContainer extends Component {
   render() {
     return (
       <div className="expense-data-container">
+        <p>Data Length : {this.props.expensesData.length}</p>
         <table className="expense-data-table">
           <thead>
             <tr>
@@ -32,4 +34,14 @@ class ExpenseDataContainer extends Component {
   }
 }
 
-export default ExpenseDataContainer;
+const mapStateToProps = state => {
+  return {
+    expensesData: state.expenses
+  };
+};
+
+const connectedExpenseDataContainer = connect(mapStateToProps)(
+  ExpenseDataContainer
+);
+
+export default connectedExpenseDataContainer;
