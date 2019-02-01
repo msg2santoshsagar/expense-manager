@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { addExpense } from "../../actions/expense.action";
 import { connect } from "react-redux";
+import {Button} from "@material-ui/core";
 
 class AddNewExpenseContainer extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class AddNewExpenseContainer extends Component {
   render() {
     return (
       <div className="add-new-expense-container">
-        <button onClick={this.handleAddNewButtonClick}>ADD NEW</button>
+        <Button variant={"contained"} color={"primary"} onClick={this.handleAddNewButtonClick}>ADD NEW</Button>
       </div>
     );
   }
