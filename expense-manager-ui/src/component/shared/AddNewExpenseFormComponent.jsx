@@ -14,6 +14,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
     form: {
@@ -82,7 +83,16 @@ const AddNewExpenseFormComponent = props => {
                             {rows.map(row => (
                                 <TableRow key={row.id} className={classes.row}>
                                     <TableCell component="th" scope="row">
-                                        {row.name}
+                                        <TextField
+                                            fullWidth
+                                            id="date"
+                                            type="date"
+                                            defaultValue="2017-05-24"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
                                     </TableCell>
                                     <TableCell align="left">{row.calories}</TableCell>
                                     <TableCell align="left">{row.fat}</TableCell>
