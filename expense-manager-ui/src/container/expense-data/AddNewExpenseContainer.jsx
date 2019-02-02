@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle'
 import AddNewExpenseFormComponent from "../../component/shared/AddNewExpenseFormComponent";
+import { todayDateForDatePicker } from "../../utils/DateUtil";
 
 class AddNewExpenseContainer extends Component {
 
@@ -14,8 +15,17 @@ class AddNewExpenseContainer extends Component {
   constructor(props) {
     super(props);
 
+    let defaultExpenseData = [{
+      date: todayDateForDatePicker(),
+      paymentMode: "CASH",
+      items: '',
+      total: '',
+      remarks: ''
+    }];
+
     this.state = {
-      open: false
+      open: false,
+      expenseData: defaultExpenseData
     }
 
     this.handleAddNewButtonClick = this.handleAddNewButtonClick.bind(this);
@@ -38,6 +48,14 @@ class AddNewExpenseContainer extends Component {
 
   handleClose() {
     this.setOpen(false);
+    console.log('Expense Data :: ',this.state.expenseData);
+  }
+
+  handleOnChange(evt) {
+    console.log('Hanlde On change called', evt);
+    console.log('Id  : ',evt.target.id);
+    console.log('Val : ',evt.target.value);
+    console.log('Idx : ',evt.target.index);
   }
 
   render() {
@@ -51,7 +69,9 @@ class AddNewExpenseContainer extends Component {
           maxWidth={false}>
           <DialogTitle id="form-dialog-title">New Expense Detail</DialogTitle>
           <DialogContent>
-            <AddNewExpenseFormComponent />
+            <AddNewExpenseFormComponent
+              expenseData={this.state.expenseData}
+              handleOnChange={this.handleOnChange} />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

@@ -1,13 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,15 +9,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = theme => ({
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
-    },
-    submit: {
-        marginTop: theme.spacing.unit * 3,
-    },
     root: {
         width: '100%',
         marginTop: theme.spacing.unit * 3,
@@ -52,17 +41,6 @@ const CustomTableCell = withStyles(theme => ({
     },
 }))(TableCell);
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-    id += 1;
-    return { id, name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-];
-
 const AddNewExpenseFormComponent = props => {
     const { classes } = props;
     return (
@@ -75,29 +53,67 @@ const AddNewExpenseFormComponent = props => {
                                 <CustomTableCell>DATE</CustomTableCell>
                                 <CustomTableCell align="left">PAYMENT MODE</CustomTableCell>
                                 <CustomTableCell align="left">ITEMS</CustomTableCell>
-                                <CustomTableCell align="right">TOTAL</CustomTableCell>
+                                <CustomTableCell align="left">TOTAL</CustomTableCell>
                                 <CustomTableCell align="left">REMARKS</CustomTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map(row => (
-                                <TableRow key={row.id} className={classes.row}>
+                            {props.expenseData.map((row, idx) => (
+                                <TableRow key={idx} className={classes.row}>
                                     <TableCell component="th" scope="row">
-                                        <TextField
-                                            fullWidth
-                                            id="date"
-                                            type="date"
-                                            defaultValue="2017-05-24"
-                                            className={classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
+                                        <FormControl fullWidth>
+                                            <TextField
+                                                fullWidth
+                                                id="date"
+                                                index={idx}
+                                                type="date"
+                                                value={row.date}
+                                                className={classes.textField}
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                onChange={props.handleOnChange}
+                                            />
+                                        </FormControl>
                                     </TableCell>
-                                    <TableCell align="left">{row.calories}</TableCell>
-                                    <TableCell align="left">{row.fat}</TableCell>
-                                    <TableCell align="right">{row.carbs}</TableCell>
-                                    <TableCell align="left">{row.protein}</TableCell>
+                                    <TableCell align="left">
+                                        <FormControl fullWidth>
+                                            <Select
+                                                id="paymentMode"
+                                                index={idx}
+                                                value={row.paymentMode}
+                                                name="paymentMode"
+                                                fullWidth
+                                                onChange={props.handleOnChange}
+                                            >
+                                                <MenuItem value={'CASH'}>CASH</MenuItem>
+                                                <MenuItem value={'PAYTM'}>PAYTM</MenuItem>
+                                                <MenuItem value={'UDIO'}>UDIO</MenuItem>
+                                            </Select>
+
+                                        </FormControl></TableCell>
+                                    <TableCell align="left"><TextField
+                                        fullWidth
+                                        id="items"
+                                        value={row.items}
+                                        margin="normal"
+                                        onChange={props.handleOnChange}
+                                    /></TableCell>
+                                    <TableCell align="left"><TextField
+                                        fullWidth
+                                        id="total"
+                                        margin="normal"
+                                        type="number"
+                                        value={row.total}
+                                        onChange={props.handleOnChange}
+                                    /></TableCell>
+                                    <TableCell align="left"><TextField
+                                        fullWidth
+                                        id="remarks"
+                                        value={row.remarks}
+                                        margin="normal"
+                                        onChange={props.handleOnChange}
+                                    /></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -112,6 +128,8 @@ const AddNewExpenseFormComponent = props => {
 
 AddNewExpenseFormComponent.prototype = {
     classes: PropTypes.object.isRequired,
+    expenseData: PropTypes.object.isRequired,
+    handleOnChange: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(AddNewExpenseFormComponent);
