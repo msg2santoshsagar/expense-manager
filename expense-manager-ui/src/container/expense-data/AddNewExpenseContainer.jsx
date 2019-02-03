@@ -2,40 +2,38 @@ import React, { Component } from "react";
 import { addExpense } from "../../actions/expense.action";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle'
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import AddNewExpenseFormComponent from "../../component/shared/AddNewExpenseFormComponent";
 import { todayDateForDatePicker } from "../../utils/DateUtil";
 
 class AddNewExpenseContainer extends Component {
-
-
   constructor(props) {
     super(props);
 
-    let defaultExpenseData = [{
-      date: todayDateForDatePicker(),
-      paymentMode: "CASH",
-      items: '',
-      total: '',
-      remarks: ''
-    }];
+    let defaultExpenseData = [
+      {
+        date: todayDateForDatePicker(),
+        paymentMode: "CASH",
+        items: "",
+        total: "",
+        remarks: "",
+        verified: "YES"
+      }
+    ];
 
     this.state = {
       open: false,
       expenseData: defaultExpenseData
-    }
+    };
 
-    this.handleAddNewButtonClick = this.handleAddNewButtonClick.bind(this);
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.setOpen = this.setOpen.bind(this);
-  }
-
-  handleAddNewButtonClick() {
-    this.props.addNewExpense({});
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleAddButtonClicked = this.handleAddButtonClicked.bind(this);
   }
 
   setOpen(val) {
@@ -48,38 +46,62 @@ class AddNewExpenseContainer extends Component {
 
   handleClose() {
     this.setOpen(false);
-    console.log('Expense Data :: ',this.state.expenseData);
   }
 
-  handleOnChange(evt) {
-    console.log('Hanlde On change called', evt);
-    console.log('Id  : ',evt.target.id);
-    console.log('Val : ',evt.target.value);
-    console.log('Idx : ',evt.target.index);
+  handleAddButtonClicked() {
+    console.log("Request to add expense data: ", this.state.expenseData);
+    this.props.addNewExpense(this.state.expenseData);
+    this.handleClose();
   }
+
+  handleOnChange(evt, idx) {
+    let key = evt.target.name;
+    let val = evt.target.value;
+    let currentExpenseData = this.state.expenseData;
+    currentExpenseData[idx][key] = val;
+    this.setState({ expenseData: currentExpenseData });
+  }
+
+  buttonStyle = {
+    float: "right",
+    marginRight: "75px",
+    marginBottom: "20px"
+  };
 
   render() {
     return (
       <div className="add-new-expense-container">
-        <div >
-          <Button variant={"contained"} color={"primary"} onClick={this.handleClickOpen}>ADD NEW</Button>
+        <div style={this.buttonStyle}>
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            size={"large"}
+            onClick={this.handleClickOpen}
+          >
+            ADD NEW
+          </Button>
         </div>
-        <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title"
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
           fullWidth={true}
-          maxWidth={false}>
+          maxWidth={false}
+        >
           <DialogTitle id="form-dialog-title">New Expense Detail</DialogTitle>
           <DialogContent>
             <AddNewExpenseFormComponent
               expenseData={this.state.expenseData}
-              handleOnChange={this.handleOnChange} />
+              handleOnChange={this.handleOnChange}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
               Cancel
-        </Button>
-            <Button onClick={this.handleClose} color="primary">
+            </Button>
+            <Button onClick={this.handleAddButtonClicked} color="primary">
               ADD
-        </Button>
+            </Button>
           </DialogActions>
         </Dialog>
       </div>

@@ -6,7 +6,6 @@ class ExpenseDataContainer extends Component {
   render() {
     return (
       <div className="expense-data-container">
-        <p>Data Length : {this.props.expensesData.length}</p>
         <table className="expense-data-table">
           <thead>
             <tr>
@@ -19,14 +18,16 @@ class ExpenseDataContainer extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>30/01/2019</td>
-              <td>CASH</td>
-              <td>Vegetable</td>
-              <td>500</td>
-              <td>Potato</td>
-              <td>YES</td>
-            </tr>
+            {this.props.expensesData.map((row, idx) => (
+              <tr key={idx}>
+                <td>{row.date}</td>
+                <td>{row.paymentMode}</td>
+                <td>{row.items}</td>
+                <td>{row.total}</td>
+                <td>{row.remarks}</td>
+                <td>{row.verified}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
