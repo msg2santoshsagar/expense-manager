@@ -1,8 +1,28 @@
 import React, { Component } from "react";
 import "./expense-data.css";
 import { connect } from "react-redux";
+import { addExpense } from "../../actions/expense.action";
+import {formatDateToDisplay} from "../../utils/DateUtil";
 
 class ExpenseDataContainer extends Component {
+  // constructor(props){
+  //   super(props);
+  // }
+
+  formatResult(res) {
+   return res.map(row => {
+      row.date = formatDateToDisplay(row.date);
+      return row;
+    });
+  }
+
+  componentDidMount() {
+    console.log("Component mount done");
+    fetch("/expenseManagerService/api/expenses")
+      .then(res => res.json())
+      .then(res => this.props.addNewExpense(this.formatResult(res)));
+  }
+
   render() {
     return (
       <div className="expense-data-container">
@@ -25,7 +45,7 @@ class ExpenseDataContainer extends Component {
                 <td>{row.items}</td>
                 <td>{row.total}</td>
                 <td>{row.remarks}</td>
-                <td>{row.verified}</td>
+                <td>{row.verified ? 'YES' : 'NO'}</td>
               </tr>
             ))}
           </tbody>
@@ -41,8 +61,17 @@ const mapStateToProps = state => {
   };
 };
 
-const connectedExpenseDataContainer = connect(mapStateToProps)(
-  ExpenseDataContainer
-);
+const mapDispatchToProps = dispatch => {
+  return {
+    addNewExpense: expenseData => {
+      dispatch(addExpense(expenseData));
+    }
+  };
+};
+
+const connectedExpenseDataContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ExpenseDataContainer);
 
 export default connectedExpenseDataContainer;

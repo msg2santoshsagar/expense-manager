@@ -7,7 +7,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import AddNewExpenseFormComponent from "../../component/shared/AddNewExpenseFormComponent";
-import { todayDateForDatePicker } from "../../utils/DateUtil";
+import {
+  formatDateToDisplay,
+  todayDateForDatePicker
+} from "../../utils/DateUtil";
 
 class AddNewExpenseContainer extends Component {
   constructor(props) {
@@ -34,6 +37,7 @@ class AddNewExpenseContainer extends Component {
     this.setOpen = this.setOpen.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleAddButtonClicked = this.handleAddButtonClicked.bind(this);
+    this.addAndDispatchNewExpense = this.addAndDispatchNewExpense.bind(this);
   }
 
   setOpen(val) {
@@ -48,9 +52,38 @@ class AddNewExpenseContainer extends Component {
     this.setOpen(false);
   }
 
+  formatDataForServer(res) {
+    return res.map(row => {
+      row.date = new Date();
+      row.verified = true;
+      return row;
+    });
+  }
+
+  formatResult(res) {
+    return res.map(row => {
+      row.date = formatDateToDisplay(row.date);
+      return row;
+    });
+  }
+
+  addAndDispatchNewExpense() {
+    fetch("/expenseManagerService/api/expenses", {
+      method: "POST",
+      body: JSON.stringify(this.formatDataForServer(this.state.expenseData)),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(res => this.props.addNewExpense(this.formatResult(res)));
+  }
+
   handleAddButtonClicked() {
     console.log("Request to add expense data: ", this.state.expenseData);
-    this.props.addNewExpense(this.state.expenseData);
+    //this.props.addNewExpense(this.state.expenseData);
+    this.addAndDispatchNewExpense();
     this.handleClose();
   }
 
