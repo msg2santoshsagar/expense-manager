@@ -21,4 +21,8 @@ public class ExpensesService {
 		return expensesRepository.save(expensesEntity);
 	}
 	
+	public List<ExpensesEntity> save(List<ExpensesEntity> expensesEntity) {
+		return expensesRepository.saveAll(expensesEntity);
+	}
+	
 }

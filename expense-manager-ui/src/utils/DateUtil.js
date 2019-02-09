@@ -5,11 +5,11 @@ export function todayDateForDatePicker() {
   let monthIndex = date.getMonth() + 1;
   let year = date.getFullYear();
 
-  if (monthIndex < 9) {
+  if (monthIndex < 10) {
     monthIndex = "0" + monthIndex;
   }
 
-  if (day < 9) {
+  if (day < 10) {
     day = "0" + day;
   }
 

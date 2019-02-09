@@ -2,25 +2,20 @@ import React, { Component } from "react";
 import "./expense-data.css";
 import { connect } from "react-redux";
 import { addExpense } from "../../actions/expense.action";
-import {formatDateToDisplay} from "../../utils/DateUtil";
+import { formatDateToDisplay } from "../../utils/DateUtil";
+import callApi from "../../service/api";
+import RequestMethod from "../../constants/requestMethod";
+import RequestUrls from "../../constants/requestUrls";
 
 class ExpenseDataContainer extends Component {
-  // constructor(props){
-  //   super(props);
-  // }
-
-  formatResult(res) {
-   return res.map(row => {
-      row.date = formatDateToDisplay(row.date);
-      return row;
-    });
-  }
-
   componentDidMount() {
-    console.log("Component mount done");
-    fetch("/expenseManagerService/api/expenses")
-      .then(res => res.json())
-      .then(res => this.props.addNewExpense(this.formatResult(res)));
+    callApi(
+      RequestUrls.expenseData,
+      null,
+      RequestMethod.GET
+    ).then(res => {
+      this.props.addNewExpense(res.data);
+    });
   }
 
   render() {
@@ -40,12 +35,12 @@ class ExpenseDataContainer extends Component {
           <tbody>
             {this.props.expensesData.map((row, idx) => (
               <tr key={idx}>
-                <td>{row.date}</td>
+                <td>{formatDateToDisplay(row.date)}</td>
                 <td>{row.paymentMode}</td>
                 <td>{row.items}</td>
                 <td>{row.total}</td>
                 <td>{row.remarks}</td>
-                <td>{row.verified ? 'YES' : 'NO'}</td>
+                <td>{row.verified ? "YES" : "NO"}</td>
               </tr>
             ))}
           </tbody>

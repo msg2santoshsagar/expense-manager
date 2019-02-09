@@ -1,5 +1,6 @@
 package com.alife.expensemanagerserver.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +28,13 @@ public class ExpensesController {
 		return expenseService.findAll();
 	}
 	
+//	@PostMapping
+//	public ExpensesEntity post(@RequestBody ExpensesEntity expensesEntity) {
+//		return expenseService.save(expensesEntity);
+//	}
+	
 	@PostMapping
-	public ExpensesEntity post(@RequestBody ExpensesEntity expensesEntity) {
+	public List<ExpensesEntity> post(@RequestBody List<ExpensesEntity> expensesEntity) {
 		return expenseService.save(expensesEntity);
 	}
 	
@@ -41,7 +47,9 @@ public class ExpensesController {
 		e.setTotal(505.10);
 		e.setRemarks("Fresh Vegetable");
 		e.setVerified(true);
-		post(e);
+		List<ExpensesEntity> l = new ArrayList<>();
+		l.add(e);
+		post(l);
 	}
 	
 }
